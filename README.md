@@ -1,0 +1,87 @@
+# rootchat
+
+A real-time, movie-hacker themed terminal chatroom. Matrix rain background, a fake "bypassing the firewall" boot sequence, green-on-black terminal UI — and a fully working group chat underneath, built on Node.js + Socket.IO.
+
+No accounts, no database. Pick a handle, pick (or generate) a channel code, share the code with friends, and you're all in the same room.
+
+## Run it locally
+
+Requires [Node.js](https://nodejs.org) 18+.
+
+```bash
+git clone https://github.com/<your-username>/rootchat.git
+cd rootchat
+npm install
+npm start
+```
+
+Open **http://localhost:4004**. That's it — three commands.
+
+## Chatting with friends
+
+rootchat has no built-in accounts — a "channel code" is the only thing that determines who's in the same room. Anyone who connects with the same code lands in the same chat.
+
+### Option A — share a public link (recommended for anything longer than a quick call)
+
+Deploy it once (see below) to get a permanent `https://` URL, then just send friends:
+
+```
+https://your-app.onrender.com   channel code: zion-9f2a
+```
+
+They open the link, type a handle, type the same channel code, hit connect. Click **SHARE** in the chat header to copy that invite text automatically.
+
+### Option B — run it on your own machine + tunnel it temporarily
+
+Good for a quick session without deploying anywhere.
+
+```bash
+npm start
+# in a second terminal:
+npx ngrok http 4004
+```
+
+ngrok prints a public `https://...ngrok-free.app` URL — send that plus your channel code to friends. The link stops working once you close ngrok or your machine sleeps. ([cloudflared](https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/downloads/) is a free alternative to ngrok if you prefer.)
+
+## Deploying so the link is permanent
+
+Any Node host works since this is a plain Express + Socket.IO app. Three easy free-tier options:
+
+**Render** — connect your GitHub repo, Render auto-detects `render.yaml` in this repo. Click deploy. Done.
+
+**Railway** — `railway up` (or connect the repo in their dashboard). No config file needed, it auto-detects Node.
+
+**Fly.io** —
+```bash
+fly launch --no-deploy   # detects fly.toml already in this repo
+fly deploy
+```
+
+**Docker** (any VPS/host that runs containers):
+```bash
+docker build -t rootchat .
+docker run -p 4004:4004 rootchat
+```
+
+All of them just need the `PORT` env var respected, which the server already does (`process.env.PORT`).
+
+## Commands inside the chat
+
+- `/help` — list commands
+- `/clear` — clear your local screen (does not affect other users)
+- `/users` — list who's currently in the room
+- `/whoami` — print your handle
+
+## How it works
+
+- `server/index.js` — Express serves the static frontend; Socket.IO manages rooms (`socket.join(roomCode)`), broadcasts messages, and tracks who's online per room. All state is in-memory — restarting the server clears all rooms.
+- `public/` — plain HTML/CSS/JS, no build step. `matrix.js` draws the falling-code background on a `<canvas>`; `client.js` handles the boot animation, join flow, and chat rendering (all user text is rendered via `textContent`, never `innerHTML`, so messages can't inject HTML/scripts).
+- Messages are capped at 500 characters and rate-limited per connection (15 messages / 5 seconds) server-side.
+
+## Fork it / make it yours
+
+Because there's no database and no auth, standing up your own instance is just "clone, install, run" (or deploy). Swap the ASCII banner in `public/index.html`, recolor `public/style.css`, or add persistence/auth if you want history across restarts — it's intentionally minimal so it's easy to hack on.
+
+## License
+
+MIT — see [LICENSE](LICENSE). Use it, fork it, ship your own.

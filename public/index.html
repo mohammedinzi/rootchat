@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>rootchat</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💀</text></svg>" />
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<canvas id="matrix"></canvas>
+
+<main id="screen-boot" class="screen">
+  <pre id="banner" class="banner">██████╗  ██████╗  ██████╗ ████████╗ ██████╗██╗  ██╗ █████╗ ████████╗
+██╔══██╗██╔═══██╗██╔═══██╗╚══██╔══╝██╔════╝██║  ██║██╔══██╗╚══██╔══╝
+██████╔╝██║   ██║██║   ██║   ██║   ██║     ███████║███████║   ██║
+██╔══██╗██║   ██║██║   ██║   ██║   ██║     ██╔══██║██╔══██║   ██║
+██║  ██║╚██████╔╝╚██████╔╝   ██║   ╚██████╗██║  ██║██║  ██║   ██║
+╚═╝  ╚═╝ ╚═════╝  ╚═════╝    ╚═╝    ╚═════╝╚═╝  ╚═╝╚═╝  ╚═╝   ╚═╝   </pre>
+
+  <div id="boot-log" class="boot-log" aria-live="polite"></div>
+
+  <form id="join-form" class="join-form hidden">
+    <div class="field">
+      <label for="nickname">HANDLE</label>
+      <input id="nickname" name="nickname" maxlength="20" autocomplete="off" placeholder="neo" required />
+    </div>
+    <div class="field">
+      <label for="roomcode">CHANNEL CODE</label>
+      <div class="room-row">
+        <input id="roomcode" name="roomcode" maxlength="24" autocomplete="off" placeholder="e.g. zion-9f2a" required />
+        <button type="button" id="gen-room" class="ghost-btn">GENERATE</button>
+      </div>
+    </div>
+    <button type="submit" class="primary-btn">&gt; ESTABLISH CONNECTION_</button>
+  </form>
+</main>
+
+<main id="screen-chat" class="screen hidden">
+  <header class="chat-header">
+    <div class="chat-title">
+      <span class="prompt">root@chat</span><span class="colon">:</span><span id="room-label" class="path">~/lobby</span><span class="colon">$</span>
+    </div>
+    <div class="header-actions">
+      <button id="copy-invite" class="ghost-btn small" title="Copy shareable invite text">SHARE</button>
+      <span id="user-count" class="user-count">1 online</span>
+    </div>
+  </header>
+
+  <div class="chat-body">
+    <aside id="user-list" class="user-list"></aside>
+    <div class="log-wrap">
+      <div id="log" class="log" aria-live="polite"></div>
+      <form id="message-form" class="message-form">
+        <span class="prompt-inline">&gt;</span>
+        <input id="message-input" autocomplete="off" maxlength="500" placeholder="type a message or /help" />
+      </form>
+    </div>
+  </div>
+</main>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="matrix.js"></script>
+<script src="client.js"></script>
+</body>
+</html>

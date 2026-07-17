@@ -1,0 +1,314 @@
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+
+:root {
+  --green: #39ff88;
+  --green-dim: #1f8c4d;
+  --bg: #030604;
+  --panel: rgba(6, 20, 10, 0.85);
+  --border: #145c33;
+  --danger: #ff4d4d;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background: var(--bg);
+  color: var(--green);
+  font-family: 'Share Tech Mono', 'Courier New', monospace;
+  overflow: hidden;
+}
+
+#matrix {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  opacity: 0.5;
+}
+
+.screen {
+  position: relative;
+  z-index: 1;
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.banner {
+  color: var(--green);
+  font-size: clamp(6px, 1.6vw, 13px);
+  line-height: 1.1;
+  text-shadow: 0 0 8px var(--green);
+  margin: 0 0 24px 0;
+  white-space: pre;
+  text-align: center;
+}
+
+.boot-log {
+  width: min(640px, 90vw);
+  min-height: 160px;
+  font-size: 14px;
+  line-height: 1.6;
+  white-space: pre-wrap;
+}
+
+.boot-log .line {
+  opacity: 0;
+  animation: reveal 0.15s forwards;
+}
+
+.boot-log .ok {
+  color: var(--green);
+}
+
+.boot-log .cursor::after {
+  content: '_';
+  animation: blink 1s step-start infinite;
+}
+
+@keyframes reveal {
+  to { opacity: 1; }
+}
+
+@keyframes blink {
+  50% { opacity: 0; }
+}
+
+.join-form {
+  width: min(420px, 90vw);
+  margin-top: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  border: 1px solid var(--border);
+  background: var(--panel);
+  padding: 20px;
+  box-shadow: 0 0 24px rgba(57, 255, 136, 0.15);
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.field label {
+  font-size: 12px;
+  letter-spacing: 2px;
+  color: var(--green-dim);
+}
+
+.room-row {
+  display: flex;
+  gap: 8px;
+}
+
+input {
+  background: #000;
+  border: 1px solid var(--border);
+  color: var(--green);
+  font-family: inherit;
+  font-size: 15px;
+  padding: 10px 12px;
+  outline: none;
+  flex: 1;
+  min-width: 0;
+}
+
+input:focus {
+  border-color: var(--green);
+  box-shadow: 0 0 8px rgba(57, 255, 136, 0.4);
+}
+
+.primary-btn, .ghost-btn {
+  font-family: inherit;
+  cursor: pointer;
+  letter-spacing: 1px;
+}
+
+.primary-btn {
+  background: var(--green);
+  color: #000;
+  border: none;
+  padding: 12px;
+  font-size: 15px;
+  font-weight: bold;
+  transition: filter 0.15s;
+}
+
+.primary-btn:hover {
+  filter: brightness(1.2);
+}
+
+.ghost-btn {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--green);
+  padding: 0 12px;
+  font-size: 13px;
+}
+
+.ghost-btn:hover {
+  border-color: var(--green);
+  background: rgba(57, 255, 136, 0.08);
+}
+
+.ghost-btn.small {
+  font-size: 11px;
+  padding: 6px 10px;
+}
+
+/* Chat screen */
+
+#screen-chat {
+  padding: 0;
+  align-items: stretch;
+  justify-content: stretch;
+}
+
+.chat-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 20px;
+  border-bottom: 1px solid var(--border);
+  background: var(--panel);
+}
+
+.chat-title {
+  font-size: 15px;
+}
+
+.prompt {
+  color: var(--green);
+}
+
+.colon {
+  color: var(--green-dim);
+}
+
+.path {
+  color: #7fffb0;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.user-count {
+  font-size: 12px;
+  color: var(--green-dim);
+}
+
+.chat-body {
+  flex: 1;
+  display: flex;
+  min-height: 0;
+}
+
+.user-list {
+  width: 180px;
+  border-right: 1px solid var(--border);
+  background: rgba(0, 0, 0, 0.4);
+  padding: 12px;
+  overflow-y: auto;
+  font-size: 13px;
+}
+
+.user-list .user-entry::before {
+  content: '● ';
+  color: var(--green);
+}
+
+.log-wrap {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.log {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px 20px;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.msg {
+  margin-bottom: 6px;
+  word-wrap: break-word;
+}
+
+.msg .ts {
+  color: var(--green-dim);
+  margin-right: 8px;
+  font-size: 12px;
+}
+
+.msg .nick {
+  color: #7fffb0;
+  margin-right: 6px;
+}
+
+.msg.system {
+  color: var(--green-dim);
+  font-style: italic;
+}
+
+.msg.self .nick {
+  color: #ffe066;
+}
+
+.msg.error {
+  color: var(--danger);
+}
+
+.message-form {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-top: 1px solid var(--border);
+  padding: 10px 20px;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.prompt-inline {
+  color: var(--green);
+}
+
+.message-form input {
+  border: none;
+  background: transparent;
+  padding: 6px 0;
+}
+
+.message-form input:focus {
+  box-shadow: none;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #000;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+}
