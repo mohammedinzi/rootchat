@@ -9,7 +9,7 @@ No accounts, no database. Pick a handle, pick (or generate) a channel code, shar
 Requires [Node.js](https://nodejs.org) 18+.
 
 ```bash
-git clone https://github.com/<your-username>/rootchat.git
+git clone https://github.com/mohammedinzi/rootchat.git
 cd rootchat
 npm install
 npm start
