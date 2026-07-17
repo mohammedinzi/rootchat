@@ -17,6 +17,24 @@ npm start
 
 Open **http://localhost:4004**. That's it — three commands.
 
+## Chat straight from your terminal (no browser)
+
+rootchat also ships a terminal client that talks to the same server over the same protocol — same boot sequence and green-on-black look, but it never opens a browser.
+
+```bash
+npm run chat
+```
+
+It'll prompt you for a handle and a channel code, then drop you straight into the chat prompt. To skip the prompts or connect to a friend's deployed server instead of localhost:
+
+```bash
+node bin/rootchat.js --nick neo --room zion-9f2a --server https://your-app.onrender.com
+```
+
+In-chat commands: `/help`, `/clear`, `/users`, `/whoami`, `/quit`.
+
+Want a global `rootchat` command instead of `npm run chat`? Run `npm link` once inside this repo — then `rootchat` works from any directory.
+
 ## Chatting with friends
 
 rootchat has no built-in accounts — a "channel code" is the only thing that determines who's in the same room. Anyone who connects with the same code lands in the same chat.
@@ -76,6 +94,7 @@ All of them just need the `PORT` env var respected, which the server already doe
 
 - `server/index.js` — Express serves the static frontend; Socket.IO manages rooms (`socket.join(roomCode)`), broadcasts messages, and tracks who's online per room. All state is in-memory — restarting the server clears all rooms.
 - `public/` — plain HTML/CSS/JS, no build step. `matrix.js` draws the falling-code background on a `<canvas>`; `client.js` handles the boot animation, join flow, and chat rendering (all user text is rendered via `textContent`, never `innerHTML`, so messages can't inject HTML/scripts).
+- `bin/rootchat.js` — the terminal client. Same Socket.IO protocol as the browser, rendered with ANSI codes via Node's built-in `readline` instead of the DOM.
 - Messages are capped at 500 characters and rate-limited per connection (15 messages / 5 seconds) server-side.
 
 ## Fork it / make it yours
