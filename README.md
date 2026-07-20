@@ -15,7 +15,7 @@ npm install
 npm start
 ```
 
-Open **http://localhost:4004**. That's it — three commands.
+Open **http://localhost:4004**. This is local-only: it works on *your* computer, not a friend's.
 
 ## Chat straight from your terminal (no browser)
 
@@ -49,17 +49,18 @@ https://your-app.onrender.com   channel code: zion-9f2a
 
 They open the link, type a handle, type the same channel code, hit connect. Click **SHARE** in the chat header to copy that invite text automatically.
 
-### Option B — run it on your own machine + tunnel it temporarily
+### Option B — run it on your own machine + share a temporary public link
 
 Good for a quick session without deploying anywhere.
 
 ```bash
-npm start
-# in a second terminal:
-npx ngrok http 4004
+brew install cloudflared  # only needed once on macOS
+npm run share
 ```
 
-ngrok prints a public `https://...ngrok-free.app` URL — send that plus your channel code to friends. The link stops working once you close ngrok or your machine sleeps. ([cloudflared](https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/downloads/) is a free alternative to ngrok if you prefer.)
+It prints a public `https://...trycloudflare.com` URL. Send **that exact URL** plus a channel code to friends. They should open the URL in their browser (or point the terminal client at it with `--server`); they must not run `npm start` themselves, because that makes a separate server and separate chat.
+
+Keep the terminal running and keep your computer awake. The URL stops working when you press `Ctrl+C`, close the terminal, or your machine sleeps. For a permanent link, deploy the app once as described below.
 
 ## Deploying so the link is permanent
 
